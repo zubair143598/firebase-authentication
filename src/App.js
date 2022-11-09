@@ -4,15 +4,14 @@ import "bootstrap/dist/js/bootstrap.bundle";
 import { BrowserRouter,Routes, Route } from 'react-router-dom';
 import Base from './Components/Layout/Base';
 import Home from "./Pages/Home"
-import Form from './Components/Elements/Form';
 function App() {
   return (
    <>
    <BrowserRouter>
    <Base>
    <Routes>
-    {/* <Route index path='/' element={} /> */}
-    <Route  path='/login' element={<Form title="login"/>} />
+    <Route index path='/' element={<Home/>} />
+    <Route index path='/' element={<Home/>} />
 
 
    </Routes>
