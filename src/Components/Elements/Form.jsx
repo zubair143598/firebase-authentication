@@ -1,41 +1,41 @@
 import React from "react";
 
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-
-const Form = () => {
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "./Button";
+import { Container } from "@mui/system";
+const Form = ({ title, setEmail, setPassword, handleAction }) => {
   return (
-    <div className="form-section">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-12">
-          <Stack
-      component="form"
-      sx={{
-        width: '25ch',
-      }}
-      spacing={2}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField
-        hiddenLabel
-        id="filled-hidden-label-small"
-        defaultValue="Small"
-        variant="filled"
-        size="small"
-      />
-      <TextField
-        hiddenLabel
-        id="filled-hidden-label-normal"
-        defaultValue="Normal"
-        variant="filled"
-      />
-    </Stack>
-          </div>
-        </div>
+    <Container style={{ maxWidth: "600px", margin: "5rem auto" }}>
+      <div>
+        <h2>{title} Form</h2>
       </div>
-    </div>
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 1, width: "25ch" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="email"
+          label="Email"
+          type="email"
+          variant="outlined"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          id="password"
+          label="Password"
+          type="password"
+          variant="outlined"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <br />
+        <Button title={title } handleAction={handleAction} />
+      </Box>
+    </Container>
   );
 };
 
