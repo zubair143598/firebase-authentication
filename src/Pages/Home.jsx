@@ -1,9 +1,9 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Button from '../Components/Elements/Button'
-import Form from '../Components/Elements/Form'
-import Hero from '../Components/Elements/Hero'
+// import Button from '../Components/Elements/Button'
+// import Form from '../Components/Elements/Form'
+// import Hero from '../Components/Elements/Hero'
 
 
 const Home = () => {
@@ -18,7 +18,7 @@ const Home = () => {
     {
       navigate("/login");
     }
-  },[]);
+  },[navigate]);
 
   const logout=()=>
   {

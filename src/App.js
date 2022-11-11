@@ -1,12 +1,13 @@
 import "./App.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import {  Routes, Route, useNavigate } from "react-router-dom";
 import Base from "./Components/Layout/Base";
 import Home from "./Pages/Home";
 import Form from "./Components/Elements/Form";
 import { useState } from "react";
-import { app } from "./firebase";
+import  db  from "./firebase";
+import { collection, addDoc } from "firebase/firestore";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -28,12 +29,19 @@ function App() {
         .then((res) => {
           navigate("/home");
           sessionStorage.setItem("auth", res._tokenResponse.refreshToken);
+          addDoc(collection(db, "users"), {
+            email: email,
+            password: password,
+            
+          }).then(docRef => console.log("Document written with ID: ", docRef.id))
+          
+
         })
         .catch((e) => {
-          if (e.code == "auth/wrong-password") {
+          if (e.code === "auth/wrong-password") {
             toast.error("please check the password");
           }
-          if (e.code == "auth/user-not-found") {
+          if (e.code === "auth/user-not-found") {
             toast.error("please check the email");
           }
         });
@@ -45,10 +53,10 @@ function App() {
           sessionStorage.setItem("auth", res._tokenResponse.refreshToken);
         })
         .catch((e) => {
-          if (e.code == "auth/wrong-password") {
+          if (e.code === "auth/wrong-password") {
             toast.error("please check the password");
           }
-          if (e.code == "auth/user-not-found") {
+          if (e.code === "auth/user-not-found") {
             toast.error("please check the email");
           }
         });
@@ -62,6 +70,7 @@ function App() {
           <ToastContainer />
           <Routes>
             <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route
               path="/login"
               element={
