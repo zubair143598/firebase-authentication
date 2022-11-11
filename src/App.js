@@ -10,25 +10,48 @@ import { app } from "./firebase";
 import {
   getAuth,
   signInWithEmailAndPassword,
-  CreateUserWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate= useNavigate()
+  const navigate = useNavigate();
 
   const handleAction = (id) => {
     // console.log(id);
     const Authantication = getAuth();
     if (id === 2) {
-      createUserWithEmailAndPassword(Authantication, email, password).then(
-        (res) => {
-          navigate("/home")
-          sessionStorage.setItem("auth", res._tokenResponse.refreshToken)
-        }
-      );
+      createUserWithEmailAndPassword(Authantication, email, password)
+        .then((res) => {
+          navigate("/home");
+          sessionStorage.setItem("auth", res._tokenResponse.refreshToken);
+        })
+        .catch((e) => {
+          if (e.code == "auth/wrong-password") {
+            toast.error("please check the password");
+          }
+          if (e.code == "auth/user-not-found") {
+            toast.error("please check the email");
+          }
+        });
+    }
+    if (id === 1) {
+      signInWithEmailAndPassword(Authantication, email, password)
+        .then((res) => {
+          navigate("/home");
+          sessionStorage.setItem("auth", res._tokenResponse.refreshToken);
+        })
+        .catch((e) => {
+          if (e.code == "auth/wrong-password") {
+            toast.error("please check the password");
+          }
+          if (e.code == "auth/user-not-found") {
+            toast.error("please check the email");
+          }
+        });
     }
   };
 
@@ -36,8 +59,9 @@ function App() {
     <>
       <>
         <Base>
+          <ToastContainer />
           <Routes>
-            <Route path="/home" element={<Home/>} />
+            <Route path="/home" element={<Home />} />
             <Route
               path="/login"
               element={

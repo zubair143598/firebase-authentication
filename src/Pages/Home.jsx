@@ -19,9 +19,18 @@ const Home = () => {
       navigate("/login");
     }
   },[]);
+
+  const logout=()=>
+  {
+    sessionStorage.removeItem("auth")
+    navigate("/login")
+  }
+
   return (
     <>
-    <div>Home</div>
+    <h2>Home</h2>
+    <button onClick={logout}>Logout</button>
+
     </>
   )
 }
