@@ -1,17 +1,18 @@
 import "./App.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle";
-import {  Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Base from "./Components/Layout/Base";
 import Home from "./Pages/Home";
 import Form from "./Components/Elements/Form";
 import { useState } from "react";
-import  db  from "./firebase";
+import db from "./firebase";
 import { collection, addDoc } from "firebase/firestore";
 import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -32,10 +33,10 @@ function App() {
           addDoc(collection(db, "users"), {
             email: email,
             password: password,
-            
-          }).then(docRef => console.log("Document written with ID: ", docRef.id))
-          
-
+          }).then((docRef) =>
+            // console.log("Document written with ID: ", docRef.id)
+            toast.info("Register successfully")
+          );
         })
         .catch((e) => {
           if (e.code === "auth/wrong-password") {
@@ -51,7 +52,10 @@ function App() {
         .then((res) => {
           navigate("/home");
           sessionStorage.setItem("auth", res._tokenResponse.refreshToken);
-        })
+        }).then((docRef) =>
+        // console.log("Document written with ID: ", docRef.id)
+        toast.info("Login successfully")
+      )
         .catch((e) => {
           if (e.code === "auth/wrong-password") {
             toast.error("please check the password");
@@ -61,6 +65,8 @@ function App() {
           }
         });
     }
+
+   
   };
 
   return (
@@ -69,12 +75,13 @@ function App() {
         <Base>
           <ToastContainer />
           <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route path="/home" element={<Home email={email} setEmail={setEmail}  />} />
             <Route path="/" element={<Home />} />
             <Route
               path="/login"
               element={
                 <Form
+                email={email}
                   setEmail={setEmail}
                   setPassword={setPassword}
                   handleAction={() => handleAction(1)}
@@ -86,6 +93,7 @@ function App() {
               path="/register"
               element={
                 <Form
+                email={email}
                   setEmail={setEmail}
                   setPassword={setPassword}
                   handleAction={() => handleAction(2)}

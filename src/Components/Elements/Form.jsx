@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "./Button";
 import { Container } from "@mui/system";
-const Form = ({ title, setEmail, setPassword, handleAction }) => {
+const Form = ({ title, setEmail, setPassword, handleAction,email }) => {
   return (
     <Container style={{ maxWidth: "600px", margin: "5rem auto" }}>
       <div>
